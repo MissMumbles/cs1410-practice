@@ -1,0 +1,67 @@
+#include <iostream>
+#include <fstream>
+#include <vector>
+#include <iomanip>
+#include <cmath>
+#include <algorithm>
+
+using namespace std;
+
+int main(){
+    ifstream in ("data.txt");
+    vector<int> data;
+    int x;
+    while(in>>x){
+        data.push_back(x);
+    }
+    in.close();
+
+    //min and max
+    int min_val= *min_element(data.begin(), data.end());
+    int max_val= *max_element(data.begin(), data.end());
+    //sum
+    double sum=0.0;
+    for (int x : data){
+        sum  += x;
+    }
+    //mean
+    double mean = sum / data.size();
+    //variance
+    double varience = 0.0;
+    for (int x : data){
+        varience += (mean-x) * (mean-x);
+    }
+
+    varience = varience/data.size();
+    //standard deviation
+    double sd = sqrt(varience);
+
+    //Histogram
+    vector<int> freq(11,0);
+    for (int x : data){
+        if (x>=1 && x<= 10){
+            freq[x] ++;
+        }
+    }
+
+    cout << "\n Histogram (1 to 10): \n";
+    for(int i = 1; i<=10; i++){
+        cout << setw(2)<< i << " | ";
+        int bar_length = freq[i]/2;
+        for (int j=0; j < bar_length; j++){
+            cout << '*';
+        }
+        cout << " ("<< freq[i]<< ")\n";
+    }
+
+    //Summary of stats
+    cout << fixed << setprecision(2);
+    cout << "\n\n Summary:\n";
+    cout << "Count: " << data.size()<< endl;
+    cout << "Min: " << min_val << endl;
+    cout << "Max: " << max_val << endl;
+    cout << "Mean: " << mean << endl;
+    cout << "Standard Deviation: " << sd << endl;
+
+    return 0;
+}
